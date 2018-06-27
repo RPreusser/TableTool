@@ -61,11 +61,28 @@
             [dataString appendString:_config.columnSeparator];
         }
         [dataString deleteCharactersInRange:NSMakeRange([dataString length] -1,1)];
-        [dataString appendString:@"\n"];
+        
+        //Add Line Separator based on selection
+        if ([_config.lineEndType isEqualToString:@"  LF"]){
+             [dataString appendString:@"\n"];
+        }else if ([_config.lineEndType isEqualToString:@"  CR"]) {
+            [dataString appendString:@"\r"];
+        }else {
+            [dataString appendString:@"\r\n"];
+        }
+
+        
     }
     
     if(dataString.length != 0){
-        [dataString deleteCharactersInRange:NSMakeRange([dataString length] -1,1)];
+        // Hier Fallunterscheidung, wenn am ende noch Zeilenumbruch stattfinden soll, dann ausführen und bei CRLF -2 nutzen
+        if  (_config.useNewLineAtEnd == NO) {
+            if ([_config.lineEndType isEqualToString:@"CRLF"]){
+                [dataString deleteCharactersInRange:NSMakeRange([dataString length] -2,2)];
+            }else {
+                [dataString deleteCharactersInRange:NSMakeRange([dataString length] -1,1)];
+            }
+        }
     }else{
         [dataString appendString:@""];
     }

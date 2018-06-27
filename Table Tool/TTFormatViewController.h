@@ -25,6 +25,9 @@
 @property IBOutlet NSSegmentedControl *decimalControl;
 @property IBOutlet NSPopUpButton *encodingMenu;
 @property IBOutlet NSButton *useFirstRowAsHeaderCheckbox;
+@property IBOutlet NSSegmentedControl *lineEndControl;
+@property IBOutlet NSButton *useNewLineAtEndCheckbox;
+
 
 - (IBAction)updateConfiguration:(id)sender;
 

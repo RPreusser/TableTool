@@ -28,6 +28,8 @@
     self.separatorControl.enabled = enabled;
     self.decimalControl.enabled = enabled;
     self.useFirstRowAsHeaderCheckbox.enabled = enabled;
+    self.lineEndControl.enabled = enabled;
+    self.useNewLineAtEndCheckbox.enabled = enabled;
 }
 
 - (IBAction)updateConfiguration:(id)sender {
@@ -49,6 +51,11 @@
 	
 	_config.firstRowAsHeader = (self.useFirstRowAsHeaderCheckbox.state == NSOnState);
 	
+    _config.lineEndType = [[self.lineEndControl labelForSegment:[self.lineEndControl selectedSegment]] substringToIndex:4];
+
+    _config.useNewLineAtEnd = (self.useNewLineAtEndCheckbox.state == NSOnState);
+
+    
     [self.delegate configurationChangedForFormatViewController:self];
 }
 
@@ -86,6 +93,18 @@
     }
 
 	self.useFirstRowAsHeaderCheckbox.state = self.config.firstRowAsHeader ? NSOnState : NSOffState;
+
+    if([_config.lineEndType isEqualToString:@"  LF"]){
+        [_lineEndControl selectSegmentWithTag:0];
+    }else if ([_config.lineEndType isEqualToString:@"  CR"]) {
+        [_lineEndControl selectSegmentWithTag:1];
+    }else {
+        [_lineEndControl selectSegmentWithTag:2];
+    }
+
+    self.useNewLineAtEndCheckbox.state = self.config.useNewLineAtEnd ? NSOnState : NSOffState;
+
+    
 }
 
 @end

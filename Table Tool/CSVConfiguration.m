@@ -19,6 +19,8 @@
         _escapeCharacter = @"\"";
         _decimalMark = @".";
         _firstRowAsHeader = NO;
+        _lineEndType  = @"LF";
+        _useNewLineAtEnd = NO;
     }
     return self;
 }
@@ -31,12 +33,14 @@
     copy->_escapeCharacter = _escapeCharacter;
     copy->_quoteCharacter = _quoteCharacter;
     copy->_firstRowAsHeader = _firstRowAsHeader;
+    copy->_lineEndType = _lineEndType;
+    copy->_useNewLineAtEnd = _useNewLineAtEnd;
     return copy;
 }
 
 -(NSString *)description {
-    return [NSString stringWithFormat:@"separator: \'%@\', quote: \'%@\', escape: \'%@\', decimal: \'%@\', firstAsHeader: %@",
-            _columnSeparator, _quoteCharacter, _escapeCharacter, _decimalMark, _firstRowAsHeader ? @"YES" : @"NO"];
+    return [NSString stringWithFormat:@"separator: \'%@\', quote: \'%@\', escape: \'%@\', decimal: \'%@\', firstAsHeader: %@, lineEnd: \'%@\', newLineAtEnd: %@",
+            _columnSeparator, _quoteCharacter, _escapeCharacter, _decimalMark, _firstRowAsHeader ? @"YES" : @"NO", _lineEndType, _useNewLineAtEnd ? @"YES" : @"NO"];
 }
 
 +(NSArray<NSArray*>*)supportedEncodings {

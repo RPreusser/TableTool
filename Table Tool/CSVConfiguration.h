@@ -16,6 +16,8 @@
 @property NSString *escapeCharacter;
 @property NSString *decimalMark;
 @property BOOL firstRowAsHeader;
+@property NSString *lineEndType;
+@property BOOL useNewLineAtEnd;
 
 +(NSArray<NSArray*>*)supportedEncodings;
 
