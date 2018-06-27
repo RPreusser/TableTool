@@ -34,7 +34,8 @@ Convert an existing CSV file to a different format.
 
 Table Tool was made by [Sandro Peham](https://github.com/SandroPeham), 
 [Andreas Aigner](https://github.com/aigi) and 
-[Jakob Egger](https://github.com/jakob).
+[Jakob Egger](https://github.com/jakob) and extended by
+[Ralf Preusser](https://github.com/rpreusser).
 
 ## Licence
 
