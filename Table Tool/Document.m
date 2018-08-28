@@ -87,7 +87,7 @@
     [self enableToolbarButtons];
     
     if(readingError) dispatch_async(dispatch_get_main_queue(), ^{
-        [self displayError:readingError];
+        [self displayError:self->readingError];
     });
     
     [self updateToolbarIcons];
@@ -503,13 +503,13 @@ writeRowsWithIndexes:(NSIndexSet *)rowIndexes
         // update model
         //
         
-        [_data removeObjectsAtIndexes:draggedRowIndexes];
+        [self->_data removeObjectsAtIndexes:draggedRowIndexes];
         
         NSEnumerator *reverseEnumerator = [draggedRowData reverseObjectEnumerator];
         id nextRowToInsert = nil;
         while (nextRowToInsert = [reverseEnumerator nextObject]) {
             NSUInteger insertionIndex = (dropLocation - countOfRowsBeforeDropLocation);
-            [_data insertObject:nextRowToInsert atIndex:insertionIndex];
+            [self->_data insertObject:nextRowToInsert atIndex:insertionIndex];
         }
         
         //
@@ -543,8 +543,8 @@ writeRowsWithIndexes:(NSIndexSet *)rowIndexes
             draggedIndex = [upperDraggedIndexes indexGreaterThanIndex:draggedIndex];
         }
         
-        [[self.undoManager prepareWithInvocationTarget:_data] insertObjects:[draggedRowData copy] atIndexes:[draggedRowIndexes copy]];
-        [[self.undoManager prepareWithInvocationTarget:_data] removeObjectsAtIndexes:finalIndexesAfterDropping];
+        [[self.undoManager prepareWithInvocationTarget:self->_data] insertObjects:[draggedRowData copy] atIndexes:[draggedRowIndexes copy]];
+        [[self.undoManager prepareWithInvocationTarget:self->_data] removeObjectsAtIndexes:finalIndexesAfterDropping];
         
         [self.tableView endUpdates];
         
@@ -795,7 +795,7 @@ writeRowsWithIndexes:(NSIndexSet *)rowIndexes
     
     [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
         [self.tableView beginUpdates];
-        [_data removeObjectsAtIndexes:rowIndexes];
+        [self->_data removeObjectsAtIndexes:rowIndexes];
         [self.tableView removeRowsAtIndexes:rowIndexes withAnimation:NSTableViewAnimationSlideUp];
         [self.tableView endUpdates];
     } completionHandler:^{
@@ -810,7 +810,7 @@ writeRowsWithIndexes:(NSIndexSet *)rowIndexes
     [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
         [self.tableView scrollRowToVisible:[rowIndexes firstIndex]];
         [self.tableView beginUpdates];
-        [_data insertObjects:rowContents atIndexes:rowIndexes];
+        [self->_data insertObjects:rowContents atIndexes:rowIndexes];
 		[self.tableView insertRowsAtIndexes:rowIndexes withAnimation:NSTableViewAnimationSlideDown];
 		[self.tableView selectRowIndexes:rowIndexes byExtendingSelection:NO];
         [self.tableView endUpdates];
@@ -831,7 +831,7 @@ writeRowsWithIndexes:(NSIndexSet *)rowIndexes
     
     [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
         [self.tableView beginUpdates];
-        [_data insertObject:toInsertArray atIndex:rowIndex];
+        [self->_data insertObject:toInsertArray atIndex:rowIndex];
 		[self.tableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndex:rowIndex] withAnimation:NSTableViewAnimationSlideDown];
 		[self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
         [self.tableView endUpdates];
@@ -983,7 +983,7 @@ writeRowsWithIndexes:(NSIndexSet *)rowIndexes
     
     [rowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
         NSMutableString *rowString = [NSMutableString string];
-        NSArray *row = _data[idx];
+        NSArray *row = self->_data[idx];
         for(NSString *columnId in [self getColumnsOrder]) {
             if(row.count <= columnId.integerValue) break;
             NSString *cellValue;
@@ -1137,7 +1137,7 @@ writeRowsWithIndexes:(NSIndexSet *)rowIndexes
         if (result == NSFileHandlingPanelOKButton)
         {
 			NSError *error = nil;
-			NSData *data = [self dataWithCSVConfig:accessoryViewController.config error:&error];
+            NSData *data = [self dataWithCSVConfig:self->accessoryViewController.config error:&error];
 			if (!data) {
 				[self presentError:error modalForWindow:window delegate:nil didPresentSelector:NULL contextInfo:NULL];
 			}
